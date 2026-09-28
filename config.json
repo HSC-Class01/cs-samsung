@@ -1,0 +1,23 @@
+{
+  "company": {"name": "삼성전자", "stock_code": "005930", "corp_code": "00126380"},
+  "start_year": 2010,
+  "financial_api_start_year": 2015,
+  "currency_unit": "KRW",
+  "download_raw_reports": false,
+  "metrics": {
+    "revenue": ["매출액", "수익(매출액)", "Revenue"],
+    "operating_income": ["영업이익", "영업이익(손실)", "Operating income"],
+    "net_income": ["당기순이익", "당기순이익(손실)", "Profit (loss)"],
+    "assets": ["자산총계", "Assets"],
+    "liabilities": ["부채총계", "Liabilities"],
+    "equity": ["자본총계", "Equity"],
+    "current_assets": ["유동자산", "Current assets"],
+    "current_liabilities": ["유동부채", "Current liabilities"]
+  },
+  "peer_firms": [
+    {"name":"SK하이닉스", "ticker":"000660", "rationale":"메모리 반도체"},
+    {"name":"LG전자", "ticker":"066570", "rationale":"소비자 전자·가전"},
+    {"name":"DB하이텍", "ticker":"000990", "rationale":"파운드리"},
+    {"name":"삼성전기", "ticker":"009150", "rationale":"전자부품"}
+  ]
+}
