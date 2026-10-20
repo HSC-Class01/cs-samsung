@@ -136,6 +136,7 @@ def main():
     reports = []
     rows = []
     empty_responses = 0
+    unmatched_examples = []
 
     for year in range(CFG["start_year"], date.today().year + 1):
         year_reports = report_list(year)
@@ -154,6 +155,16 @@ def main():
             values = {name: match(statement_rows, name) for name in CFG["metrics"]}
             if not any(value is not None for value in values.values()):
                 empty_responses += 1
+                if not unmatched_examples:
+                    unmatched_examples = [
+                        {
+                            "fs_div": row.get("fs_div"),
+                            "account_id": row.get("account_id"),
+                            "account_nm": row.get("account_nm"),
+                            "thstrm_amount": row.get("thstrm_amount"),
+                        }
+                        for row in statement_rows[:12]
+                    ]
                 continue
             rows.append(
                 {
@@ -172,7 +183,7 @@ def main():
     if not rows:
         raise RuntimeError(
             "DART reports were found, but no financial accounts matched. "
-            f"Checked {empty_responses} statements; inspect DART account_id/account_nm mappings."
+            f"Checked {empty_responses} statements; sample accounts: {json.dumps(unmatched_examples, ensure_ascii=False)}"
         )
 
     (OUT / "reports.json").write_text(json.dumps(reports, ensure_ascii=False, indent=2), encoding="utf-8")
