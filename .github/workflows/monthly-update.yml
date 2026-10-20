@@ -13,6 +13,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: monthly-dart-update
@@ -35,11 +37,19 @@ jobs:
         run: |
           if git diff --quiet -- docs/data; then
             echo "No data changes."
-            exit 0
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add docs/data
+            git commit -m "chore: refresh DART financial data"
+            git pull --rebase origin main
+            git push
           fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data
-          git commit -m "chore: refresh DART financial data"
-          git pull --rebase origin main
-          git push
+      - uses: actions/configure-pages@v5
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - name: Deploy dashboard
+        id: deployment
+        uses: actions/deploy-pages@v4
