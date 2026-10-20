@@ -20,14 +20,14 @@ HEADERS = {"User-Agent": "dart-samsung-finance-dashboard/1.0"}
 PERIODS = {"annual": "11011", "half-year": "11012", "quarterly": "11013"}
 # DART account IDs are more stable than localized labels across report years.
 ACCOUNT_IDS = {
-    "revenue": {"ifrs-full_Revenue", "ifrs-full_RevenueFromContractsWithCustomers", "dart_Revenue"},
-    "operating_income": {"dart_OperatingIncomeLoss", "ifrs-full_ProfitLossFromOperatingActivities"},
-    "net_income": {"ifrs-full_ProfitLoss", "dart_ProfitLoss"},
-    "assets": {"ifrs-full_Assets", "dart_TotalAssets"},
-    "liabilities": {"ifrs-full_Liabilities", "dart_TotalLiabilities"},
-    "equity": {"ifrs-full_Equity", "dart_TotalEquity"},
-    "current_assets": {"ifrs-full_CurrentAssets", "dart_CurrentAssets"},
-    "current_liabilities": {"ifrs-full_CurrentLiabilities", "dart_CurrentLiabilities"},
+    "revenue": {"ifrs_Revenue", "ifrs_RevenueFromContractsWithCustomers", "ifrs-full_Revenue", "ifrs-full_RevenueFromContractsWithCustomers", "dart_Revenue"},
+    "operating_income": {"dart_OperatingIncomeLoss", "ifrs_OperatingIncomeLoss", "ifrs-full_ProfitLossFromOperatingActivities"},
+    "net_income": {"ifrs_ProfitLoss", "ifrs-full_ProfitLoss", "dart_ProfitLoss"},
+    "assets": {"ifrs_Assets", "ifrs-full_Assets", "dart_TotalAssets"},
+    "liabilities": {"ifrs_Liabilities", "ifrs-full_Liabilities", "dart_TotalLiabilities"},
+    "equity": {"ifrs_Equity", "ifrs-full_Equity", "dart_TotalEquity"},
+    "current_assets": {"ifrs_CurrentAssets", "ifrs-full_CurrentAssets", "dart_CurrentAssets"},
+    "current_liabilities": {"ifrs_CurrentLiabilities", "ifrs-full_CurrentLiabilities", "dart_CurrentLiabilities"},
 }
 
 
@@ -59,7 +59,7 @@ def match(rows, metric):
     candidates.update(ACCOUNT_IDS.get(metric, set()))
     for fs in ("CFS", "OFS"):
         for row in rows:
-            if row.get("fs_div") != fs:
+            if row.get("fs_div") not in (fs, None):
                 continue
             if row.get("account_nm") in candidates or row.get("account_id") in candidates:
                 value = to_num(row.get("thstrm_amount"))
