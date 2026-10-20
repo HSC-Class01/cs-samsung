@@ -1,6 +1,6 @@
 # 삼성전자 DART 재무 분석 에이전트
 
-[![🔗 대시보드 바로가기](https://img.shields.io/badge/%F0%9F%94%97-%EB%8C%80시보드%20바로가기-1751D0?style=for-the-badge)](https://hsc-class01.github.io/cs-samsung/)
+[![🔗 대시보드 바로가기](https://img.shields.io/badge/%F0%9F%94%97-%EB%8C%80%EC%8B%9C%EB%B3%B4%EB%93%9C%20%EB%B0%94%EB%A1%9C%EA%B0%80%EA%B8%B0-1751D0?style=for-the-badge)](https://hsc-class01.github.io/cs-samsung/)
 
 OpenDART에서 삼성전자(005930)의 사업·반기·분기 재무제표를 수집하고, 주요 재무수치와 재무비율을 계산해 GitHub Pages 대시보드에 게시합니다.
 
