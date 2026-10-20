@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import time
 from datetime import date
 from pathlib import Path
@@ -92,11 +93,16 @@ def report_list(year):
     for item in records:
         name = item.get("report_nm", "")
         if "사업보고서" in name:
-            category = "annual"
+            category, period_label, report_code = "annual", str(year), "11011"
         elif "반기보고서" in name:
-            category = "half-year"
+            category, period_label, report_code = "half-year", f"{year} 상반기", "11012"
         elif "분기보고서" in name:
+            month_match = re.search(r"\((?:\d{4})\.(\d{2})\)", name)
+            month = int(month_match.group(1)) if month_match else 3
+            is_third_quarter = month >= 7
             category = "quarterly"
+            period_label = f"{year} {'3Q' if is_third_quarter else '1Q'}"
+            report_code = "11014" if is_third_quarter else "11013"
         else:
             continue
         receipt_no = item.get("rcept_no")
@@ -106,6 +112,8 @@ def report_list(year):
         output.append(
             {
                 "category": category,
+                "period_label": period_label,
+                "report_code": report_code,
                 "year": year,
                 "report_name": name,
                 "receipt_no": receipt_no,
@@ -148,7 +156,7 @@ def main():
                 "fnlttSinglAcntAll.json",
                 corp_code=CFG["company"]["corp_code"],
                 bsns_year=year,
-                reprt_code=PERIODS[report["category"]],
+                reprt_code=report["report_code"],
                 fs_div="CFS",
             )
             statement_rows = payload.get("list", [])
@@ -168,7 +176,8 @@ def main():
                 continue
             rows.append(
                 {
-                    "period": f"{year} {report['category']}",
+                    "period": report["period_label"],
+                    "period_label": report["period_label"],
                     "year": year,
                     "category": report["category"],
                     "receipt_no": report["receipt_no"],
